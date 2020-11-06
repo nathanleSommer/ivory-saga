@@ -9,11 +9,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Greeting
-        run: echo "Hello, world!"
-
-      - name: Simulate an error
-        run: echo "About to fail" ; exit 1
-
-      - name: Another greeting
+      - name: Hello World
         run: echo "Hello, world!"
