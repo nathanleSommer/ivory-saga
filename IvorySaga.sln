@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{87C36286-D514-40E7-9A85-AAAA984E2AA9}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		.github\workflows\main.yml = .github\workflows\main.yml
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F3078DF4-5A41-4A4E-8E35-59B67C56FD24}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IvorySaga.Api", "src\IvorySaga.Api\IvorySaga.Api.csproj", "{D7001BD6-5D44-4139-8F92-061179BE2430}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7001BD6-5D44-4139-8F92-061179BE2430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7001BD6-5D44-4139-8F92-061179BE2430}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7001BD6-5D44-4139-8F92-061179BE2430}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7001BD6-5D44-4139-8F92-061179BE2430}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D7001BD6-5D44-4139-8F92-061179BE2430} = {F3078DF4-5A41-4A4E-8E35-59B67C56FD24}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {21932DC4-215B-4D93-BE43-2AB9D542115A}
+	EndGlobalSection
+EndGlobal
