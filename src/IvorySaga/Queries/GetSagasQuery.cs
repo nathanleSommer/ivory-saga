@@ -1,4 +1,5 @@
 ﻿using IvorySaga.Data;
+using IvorySaga.Services;
 using MediatR;
 using System.Collections.Generic;
 using System.Threading;
@@ -8,33 +9,18 @@ namespace IvorySaga.Queries
 {
     public sealed class GetSagasQuery : IRequest<IEnumerable<Saga>>
     {
-        public sealed class Result
-        {
-            public Result(IReadOnlyList<object> sagas)
-            {
-                Sagas = sagas;
-            }
-
-            public IReadOnlyList<object> Sagas { get; }
-
-            public long? TotalCount { get; set; }
-        }
-
         internal sealed class Handler : IRequestHandler<GetSagasQuery, IEnumerable<Saga>>
         {
-            public Handler()
-            {
+            private readonly SagaService _sagaService;
 
+            public Handler(SagaService service)
+            {
+                _sagaService = service;
             }
 
             public async Task<IEnumerable<Saga>> Handle(GetSagasQuery request, CancellationToken cancellationToken = default)
             {
-                var sagas = new List<Saga>()
-                {
-                    new Saga() { Author = "Inso", Content = "saga1" },
-                    new Saga() { Author = "Inso", Content = "saga2" },
-                    new Saga() { Author = "Inso", Content = "saga3" },
-                };
+                var sagas = _sagaService.Get();
 
                 return sagas.AsReadOnly();
             }
