@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ivorysaga
+spec:
+  selector:
+    matchLabels:
+      app: ivorysaga
+  template:
+    metadata:
+      labels:
+        app: ivorysaga
+    spec:
+      containers:
+        - name: ivorysaga-api
+          image: nlesommer/ivorysaga
+          ports:
+            - containerPort: 5000
+              name: api
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+  replicas: 3
+  strategy: 
+    type: RollingUpdate

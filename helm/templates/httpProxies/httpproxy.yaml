@@ -1,0 +1,11 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: ivorysaga
+spec:
+  routes:
+  - services:
+    - name: ivorysaga-nodeport
+      port: 5000
+  virtualhost:
+    fqdn: ivorysaga.gg
