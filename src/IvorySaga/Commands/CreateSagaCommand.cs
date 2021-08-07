@@ -2,9 +2,6 @@
 using IvorySaga.Services;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,33 +9,15 @@ namespace IvorySaga.Commands
 {
     public sealed class CreateSagaCommand : IRequest<Saga>
     {
-        public CreateSagaCommand(string title, string author, string content)
+        public CreateSagaCommand(string title, string author)
         {
-            if (string.IsNullOrWhiteSpace(title))
-            {
-                throw new ArgumentException("The title can't be null or empty", nameof(title));
-            }
-
-            if (string.IsNullOrWhiteSpace(author))
-            {
-                throw new ArgumentException("The author can't be null or empty", nameof(author));
-            }
-
-            if (string.IsNullOrWhiteSpace(content))
-            {
-                throw new ArgumentException("The content can't be null or empty", nameof(content));
-            }
-
             Title = title;
             Author = author;
-            Content = content;
         }
 
-        public string Title { get; set; }
+        public string Title { get; set; } = default!;
 
-        public string Author { get; }
-
-        public string Content { get; }
+        public string Author { get; } = default!;
 
         internal sealed class Handler : IRequestHandler<CreateSagaCommand, Saga>
         {
@@ -59,12 +38,9 @@ namespace IvorySaga.Commands
                     Id = Guid.NewGuid().ToString(),
                     Title = request.Title,
                     Author = request.Author,
-                    Content = request.Content
                 };
 
-                _sagaService.Create(saga);
-
-                return saga;
+                return _sagaService.Create(saga);
             }
         }
     }

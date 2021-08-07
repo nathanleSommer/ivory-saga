@@ -1,5 +1,5 @@
-﻿using IvorySaga.Mongo;
-using IvorySaga.Data;
+﻿using IvorySaga.Data;
+using IvorySaga.Mongo;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +18,10 @@ namespace IvorySaga.Services
             _sagas = database.GetCollection<Saga>(settings.SagasCollectionName);
         }
 
-        public List<Saga> Get() =>
+        public List<Saga>? Get() =>
             _sagas.Find(saga => true).ToList();
 
-        public Saga Get(string id) =>
+        public Saga? Get(string id) =>
             _sagas.Find<Saga>(saga => saga.Id == id).FirstOrDefault();
 
         public Saga Create(Saga saga)

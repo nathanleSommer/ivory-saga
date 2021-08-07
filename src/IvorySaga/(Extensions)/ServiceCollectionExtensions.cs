@@ -20,6 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 sp.GetRequiredService<IOptions<IvorySagaDatabaseSettings>>().Value);
 
             services.AddSingleton<SagaService>();
+            services.AddSingleton<ChapterService>();
 
             return services;
         }

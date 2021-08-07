@@ -16,6 +16,7 @@ namespace IvorySaga.Api.Mappers
         public MappingProfile()
         {
             CreateMap<Saga, SagaModel>();
+            CreateMap<Chapter, ChapterModel>();
         }
     }
 }
