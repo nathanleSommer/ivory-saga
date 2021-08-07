@@ -2,6 +2,7 @@
 using IvorySaga.Services;
 using MediatR;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,7 +23,7 @@ namespace IvorySaga.Queries
             {
                 var sagas = _sagaService.Get();
 
-                return sagas.AsReadOnly();
+                return sagas?.AsReadOnly() ?? Enumerable.Empty<Saga>();
             }
         }
     }

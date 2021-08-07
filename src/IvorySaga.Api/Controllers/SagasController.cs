@@ -28,11 +28,21 @@ namespace IvorySaga.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<SagaModel>>> GetSagaAsync(CancellationToken cancellationToken)
+        public async Task<ActionResult<IReadOnlyList<SagaModel>>> GetSagasAsync(CancellationToken cancellationToken)
         {
             var query = new GetSagasQuery();
             var response = await _sender.Send(query, cancellationToken);
             return Ok(_mapper.Map<IReadOnlyList<SagaModel>>(response));
+        }
+
+        [HttpGet("{SagaId}")]
+        public async Task<ActionResult<IReadOnlyList<SagaModel>>> GetSagaAsync(
+            [FromRoute] SagaReference reference,
+            CancellationToken cancellationToken)
+        {
+            var query = new GetSagaQuery(reference.SagaId);
+            var response = await _sender.Send(query, cancellationToken);
+            return Ok(_mapper.Map<SagaModel>(response));
         }
 
         [HttpPost]
@@ -40,7 +50,7 @@ namespace IvorySaga.Api.Controllers
             [FromBody] CreateSagaRequest request,
             CancellationToken cancellationToken)
         {
-            var command = new CreateSagaCommand(request.Title, request.Author, request.Content);
+            var command = new CreateSagaCommand(request.Title, request.Author);
             var response = await _sender.Send(command, cancellationToken);
             return Ok(_mapper.Map<SagaModel>(response));
         }
