@@ -15,6 +15,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F3078DF4-5A4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IvorySaga.Api", "src\IvorySaga.Api\IvorySaga.Api.csproj", "{D7001BD6-5D44-4139-8F92-061179BE2430}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D6788D12-DBBA-4162-A9D6-EF4B707939ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IvorySaga.Tests", "tests\IvorySaga.Tests\IvorySaga.Tests.csproj", "{5CF7422F-9071-4AF9-B83C-D1AAE6FCC2E4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IvorySaga", "src\IvorySaga\IvorySaga.csproj", "{E09A6FF8-884D-47AA-8C28-9AF6AC2E855F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,12 +31,22 @@ Global
 		{D7001BD6-5D44-4139-8F92-061179BE2430}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7001BD6-5D44-4139-8F92-061179BE2430}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7001BD6-5D44-4139-8F92-061179BE2430}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CF7422F-9071-4AF9-B83C-D1AAE6FCC2E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CF7422F-9071-4AF9-B83C-D1AAE6FCC2E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CF7422F-9071-4AF9-B83C-D1AAE6FCC2E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CF7422F-9071-4AF9-B83C-D1AAE6FCC2E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E09A6FF8-884D-47AA-8C28-9AF6AC2E855F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E09A6FF8-884D-47AA-8C28-9AF6AC2E855F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E09A6FF8-884D-47AA-8C28-9AF6AC2E855F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E09A6FF8-884D-47AA-8C28-9AF6AC2E855F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D7001BD6-5D44-4139-8F92-061179BE2430} = {F3078DF4-5A41-4A4E-8E35-59B67C56FD24}
+		{5CF7422F-9071-4AF9-B83C-D1AAE6FCC2E4} = {D6788D12-DBBA-4162-A9D6-EF4B707939ED}
+		{E09A6FF8-884D-47AA-8C28-9AF6AC2E855F} = {F3078DF4-5A41-4A4E-8E35-59B67C56FD24}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {21932DC4-215B-4D93-BE43-2AB9D542115A}
