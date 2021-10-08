@@ -18,7 +18,7 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      run: dotnet build /p:TreatWarningsAsErrors=true --configuration Release --no-restore
+      run: dotnet msbuild /p:TreatWarningsAsErrors=true -property:Configuration=Release
     
     - name: Test
       run: dotnet test --no-restore --verbosity normal
