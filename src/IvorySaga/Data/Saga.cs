@@ -1,5 +1,6 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using System.Collections.Generic;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace IvorySaga.Data
 {
@@ -9,13 +10,15 @@ namespace IvorySaga.Data
     /// </summary>
     public sealed class Saga
     {
-        [BsonId]
-        public string Id { get; set; } = default!;
+        //[BsonId]
+        public Guid Id { get; set; } = default!;
 
         public string Title { get; set; } = default!;
 
         public string Author { get; set; } = default!;
 
-        public IEnumerable<Chapter> Chapters { get; set; } = new List<Chapter>();
+        public DateTimeOffset CreatedAt { get; set; } = default!;
+
+        public DateTimeOffset UpdatedAt { get; set; } = default!;
     }
 }

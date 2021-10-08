@@ -21,9 +21,9 @@ namespace IvorySaga.Commands
 
         internal sealed class Handler : IRequestHandler<CreateSagaCommand, Saga>
         {
-            private readonly SagaService _sagaService;
+            private readonly SagaRepository _sagaService;
 
-            public Handler(SagaService service)
+            public Handler(SagaRepository service)
             {
                 _sagaService = service;
             }
@@ -35,12 +35,16 @@ namespace IvorySaga.Commands
 
                 var saga = new Saga
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = Guid.NewGuid(),
                     Title = request.Title,
                     Author = request.Author,
+                    CreatedAt = timestamp,
+                    UpdatedAt = timestamp,
                 };
 
-                return _sagaService.Create(saga);
+                var result = await _sagaService.CreateAsync(saga);
+
+                return result;
             }
         }
     }

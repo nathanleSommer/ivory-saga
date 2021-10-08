@@ -27,16 +27,27 @@ namespace IvorySaga.Api.Controllers
             _sender = sender;
         }
 
+        /// <summary>
+        /// Gets the available sagas.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The sagas' information.</returns>
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<SagaModel>>> GetSagasAsync(CancellationToken cancellationToken)
+        public async Task<ActionResult<IReadOnlyList<SagaModel>>> GetSagas(CancellationToken cancellationToken)
         {
             var query = new GetSagasQuery();
             var response = await _sender.Send(query, cancellationToken);
             return Ok(_mapper.Map<IReadOnlyList<SagaModel>>(response));
         }
 
+        /// <summary>
+        /// Gets a saga.
+        /// </summary>
+        /// <param name="reference">The saga identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The saga's information.</returns>
         [HttpGet("{SagaId}")]
-        public async Task<ActionResult<IReadOnlyList<SagaModel>>> GetSagaAsync(
+        public async Task<ActionResult<IReadOnlyList<SagaModel>>> GetSaga(
             [FromRoute] SagaReference reference,
             CancellationToken cancellationToken)
         {
@@ -45,14 +56,39 @@ namespace IvorySaga.Api.Controllers
             return Ok(_mapper.Map<SagaModel>(response));
         }
 
+        /// <summary>
+        /// Creates a new saga.
+        /// </summary>
+        /// <param name="request">The saga's information.</param>
+        /// <param name="cancellationToken">The cancellationToken</param>
+        /// <returns>The newly created saga.</returns>
         [HttpPost]
-        public async Task<ActionResult<SagaModel>> CreateSagaAsync(
+        public async Task<ActionResult<SagaModel>> CreateSaga(
             [FromBody] CreateSagaRequest request,
             CancellationToken cancellationToken)
         {
             var command = new CreateSagaCommand(request.Title, request.Author);
             var response = await _sender.Send(command, cancellationToken);
             return Ok(_mapper.Map<SagaModel>(response));
+        }
+
+        /// <summary>
+        /// Update an existing saga.
+        /// </summary>
+        /// <param name="reference">The saga identifier.</param>
+        /// <param name="request">The saga's information to update.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>No content.</returns>
+        [HttpPatch("{SagaId}")]
+        public async Task<ActionResult> UpdateSaga(
+            [FromRoute] SagaReference reference,
+            [FromBody] UpdateSagaRequest request,
+            CancellationToken cancellationToken)
+        {
+            var command = new UpdateSagaCommand(reference.SagaId, request.Title);
+            await _sender.Send(command, cancellationToken);
+
+            return NoContent();
         }
     }
 }

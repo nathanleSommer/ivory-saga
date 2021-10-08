@@ -12,17 +12,16 @@ namespace IvorySaga.Queries
     {
         internal sealed class Handler : IRequestHandler<GetSagasQuery, IEnumerable<Saga>>
         {
-            private readonly SagaService _sagaService;
+            private readonly SagaRepository _sagaService;
 
-            public Handler(SagaService service)
+            public Handler(SagaRepository service)
             {
                 _sagaService = service;
             }
 
             public async Task<IEnumerable<Saga>> Handle(GetSagasQuery request, CancellationToken cancellationToken = default)
             {
-                var sagas = _sagaService.Get();
-
+                var sagas = await _sagaService.GetAsync(cancellationToken);
                 return sagas?.AsReadOnly() ?? Enumerable.Empty<Saga>();
             }
         }

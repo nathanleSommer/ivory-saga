@@ -18,16 +18,16 @@ namespace IvorySaga.Queries
 
         internal sealed class Handler : IRequestHandler<GetSagaQuery, Saga>
         {
-            private readonly SagaService _sagaService;
+            private readonly SagaRepository _sagaService;
 
-            public Handler(SagaService service)
+            public Handler(SagaRepository service)
             {
                 _sagaService = service;
             }
 
             public async Task<Saga> Handle(GetSagaQuery request, CancellationToken cancellationToken = default)
             {
-                var saga = _sagaService.Get(request.Id.ToString());
+                var saga = await _sagaService.GetAsync(request.Id, cancellationToken);
 
                 if (saga is null)
                 {
