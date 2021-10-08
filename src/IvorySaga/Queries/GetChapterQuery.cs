@@ -20,16 +20,16 @@ namespace IvorySaga.Queries
 
         internal sealed class Handler : IRequestHandler<GetChapterQuery, Chapter>
         {
-            private readonly ChapterService _chapterService;
+            private readonly ChapterRepository _chapterService;
 
-            public Handler(ChapterService service)
+            public Handler(ChapterRepository service)
             {
                 _chapterService = service;
             }
 
             public async Task<Chapter> Handle(GetChapterQuery request, CancellationToken cancellationToken = default)
             {
-                var chapter = _chapterService.Get(request.SagaId.ToString(), request.ChapterId.ToString());
+                var chapter = await _chapterService.GetAsync(request.SagaId, request.ChapterId, cancellationToken);
 
                 if (chapter is null)
                 {

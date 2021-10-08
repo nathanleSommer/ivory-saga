@@ -11,6 +11,8 @@ namespace IvorySaga.Api.Models
 
         public string Title { get; set; } = default!;
 
-        public IEnumerable<ChapterModel> Chapters { get; set; } = new List<ChapterModel>();
+        public DateTimeOffset CreatedAt { get; set; } = default!;
+
+        public DateTimeOffset UpdatedAt { get; set; } = default!;
     }
 }

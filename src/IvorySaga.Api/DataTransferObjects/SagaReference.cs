@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IvorySaga.Api.DataTransferObjects
 {
-    public class SagaReference
+    public sealed class SagaReference
     {
         [Required]
         public Guid SagaId { get; set; } = default!;

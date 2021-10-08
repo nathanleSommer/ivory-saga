@@ -21,11 +21,11 @@ namespace IvorySaga.Commands
 
         internal sealed class Handler : IRequestHandler<CreateChapterCommand, Chapter>
         {
-            private readonly ChapterService _chapterService;
+            private readonly ChapterRepository _chapterService;
 
-            public Handler(ChapterService service)
+            public Handler(ChapterRepository chapterService)
             {
-                _chapterService = service;
+                _chapterService = chapterService;
             }
 
             /// <inheritdoc />
@@ -38,9 +38,11 @@ namespace IvorySaga.Commands
                     Id = Guid.NewGuid(),
                     SagaId = request.SagaId,
                     Content = request.Content,
+                    CreatedAt = timestamp,
+                    UpdatedAt = timestamp,
                 };
 
-                return _chapterService.Create(chapter);
+                return await _chapterService.CreateAsync(chapter, cancellationToken);
             }
         }
     }

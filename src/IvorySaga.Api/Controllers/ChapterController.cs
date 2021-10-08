@@ -27,8 +27,14 @@ namespace IvorySaga.Api.Controllers
             _sender = sender;
         }
 
+        /// <summary>
+        /// Gets the list of chapter of a saga.
+        /// </summary>
+        /// <param name="reference">The saga identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The chapters of the saga.</returns>
         [HttpGet("chapters")]
-        public async Task<ActionResult<IReadOnlyList<SagaModel>>> GetChaptersAsync(
+        public async Task<ActionResult<IReadOnlyList<ChapterModel>>> GetChaptersAsync(
             [FromRoute] SagaReference reference,
             CancellationToken cancellationToken)
         {
@@ -37,16 +43,29 @@ namespace IvorySaga.Api.Controllers
             return Ok(_mapper.Map<IReadOnlyList<ChapterModel>>(response));
         }
 
+        /// <summary>
+        /// Gets a specific chapter of a saga.
+        /// </summary>
+        /// <param name="reference">The saga and chapter identifiers</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The chapter's information.</returns>
         [HttpGet("chapter/{ChapterId}")]
-        public async Task<ActionResult<IReadOnlyList<SagaModel>>> GetChapterAsync(
+        public async Task<ActionResult<ChapterModel>> GetChapterAsync(
             [FromRoute] ChapterReference reference,
             CancellationToken cancellationToken)
         {
             var query = new GetChapterQuery(reference.SagaId, reference.ChapterId);
             var response = await _sender.Send(query, cancellationToken);
-            return Ok(_mapper.Map<IReadOnlyList<ChapterModel>>(response));
+            return Ok(_mapper.Map<ChapterModel>(response));
         }
 
+        /// <summary>
+        /// Creates a new chapter in a saga.
+        /// </summary>
+        /// <param name="reference">The saga identifier.</param>
+        /// <param name="request">The chapter's content.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The newly created chapter.</returns>
         [HttpPost]
         public async Task<ActionResult<SagaModel>> CreateChapterAsync(
             [FromRoute] SagaReference reference,
