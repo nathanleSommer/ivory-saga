@@ -21,7 +21,7 @@ namespace IvorySaga.Queries
 
             public async Task<IEnumerable<Saga>> Handle(GetSagasQuery request, CancellationToken cancellationToken = default)
             {
-                var sagas = await _sagaService.GetAsync(cancellationToken);
+                var sagas = await _sagaService.Get(cancellationToken);
                 return sagas?.AsReadOnly() ?? Enumerable.Empty<Saga>();
             }
         }

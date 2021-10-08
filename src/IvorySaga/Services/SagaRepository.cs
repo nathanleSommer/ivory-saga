@@ -20,7 +20,7 @@ namespace IvorySaga.Services
             _sagas = database.GetCollection<Saga>(settings.SagasCollectionName);
         }
 
-        public async Task<List<Saga>?> GetAsync(CancellationToken cancellationToken = default)
+        public async Task<List<Saga>?> Get(CancellationToken cancellationToken = default)
         {
             var sagaCursor = await _sagas.FindAsync(saga => true, cancellationToken: cancellationToken);
             var sagas = await sagaCursor.ToListAsync(cancellationToken);

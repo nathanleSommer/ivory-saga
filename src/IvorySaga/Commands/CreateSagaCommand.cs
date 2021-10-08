@@ -42,7 +42,7 @@ namespace IvorySaga.Commands
                     UpdatedAt = timestamp,
                 };
 
-                var result = await _sagaService.CreateAsync(saga);
+                var result = await _sagaService.CreateAsync(saga, cancellationToken);
 
                 return result;
             }
