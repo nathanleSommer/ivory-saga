@@ -1,14 +1,13 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using IvorySaga.Api.DataTransferObjects;
 using IvorySaga.Api.Models;
 using IvorySaga.Commands;
 using IvorySaga.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace IvorySaga.Api.Controllers
 {
@@ -58,7 +57,7 @@ namespace IvorySaga.Api.Controllers
         /// Creates a new saga.
         /// </summary>
         /// <param name="request">The saga's information.</param>
-        /// <param name="cancellationToken">The cancellationToken</param>
+        /// <param name="cancellationToken">The cancellationToken.</param>
         /// <returns>The newly created saga.</returns>
         [HttpPost]
         public async Task<ActionResult<SagaModel>> CreateSaga(

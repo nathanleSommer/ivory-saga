@@ -1,4 +1,5 @@
-﻿using IvorySaga.Mongo;
+﻿using System.Reflection;
+using IvorySaga.Mongo;
 using IvorySaga.Services;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -6,7 +7,6 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
-using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

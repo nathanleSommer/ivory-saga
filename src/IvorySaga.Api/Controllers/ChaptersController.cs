@@ -1,14 +1,13 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using IvorySaga.Api.DataTransferObjects;
 using IvorySaga.Api.Models;
 using IvorySaga.Commands;
 using IvorySaga.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace IvorySaga.Api.Controllers
 {

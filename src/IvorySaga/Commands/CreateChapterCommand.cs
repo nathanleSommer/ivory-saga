@@ -1,9 +1,9 @@
-﻿using IvorySaga.Data;
-using IvorySaga.Services;
-using MediatR;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using IvorySaga.Data;
+using IvorySaga.Services;
+using MediatR;
 
 namespace IvorySaga.Commands
 {
@@ -28,7 +28,6 @@ namespace IvorySaga.Commands
                 _chapterService = chapterService;
             }
 
-            /// <inheritdoc />
             public async Task<Chapter> Handle(CreateChapterCommand request, CancellationToken cancellationToken = default)
             {
                 var timestamp = DateTimeOffset.UtcNow;

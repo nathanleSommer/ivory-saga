@@ -147,6 +147,11 @@ dotnet_diagnostic.IDE1006.severity = none
 # C# Coding Conventions       #
 ###############################
 
+[IvorySaga.Api/Controllers/**Controller.cs]
+# Do not required Async suffix in Controller's method name, otherwise we can't use nameof(ActionNameAsync)
+# when generation URLs through IUrlHelper.Action because Asp.Net will trim the Async suffix when generating action names.
+dotnet_naming_rule.async_methods_end_in_async.severity = None
+
 [*.cs]
 # var preferences
 csharp_style_var_for_built_in_types = true:silent
@@ -213,3 +218,52 @@ csharp_space_within_single_line_array_initializer_braces = true
 
 # use braces with using to define the scope better
 csharp_prefer_simple_using_statement = false:silent
+
+# CS1591: Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1591.severity = none
+
+# SA0001: XML comment analysis is disabled due to project configuration
+dotnet_diagnostic.SA0001.severity = none
+
+# SA1101: Prefix local calls with this
+dotnet_diagnostic.SA1101.severity = none
+
+# SA1120: Comments should contain text
+dotnet_diagnostic.SA1120.severity = warning
+
+# SA1200: Using directives should be placed correctly
+dotnet_diagnostic.SA1200.severity = warning
+
+# SA1202: Elements should be ordered by access
+dotnet_diagnostic.SA1202.severity = none
+
+# SA1204: Static elements should appear before instance elements
+dotnet_diagnostic.SA1204.severity = warning
+
+# SA1306: Field names should begin with lower-case letter
+dotnet_diagnostic.SA1306.severity = none
+
+# SA1309: Field names should not begin with underscore
+dotnet_diagnostic.SA1309.severity = none
+
+# SA1412: Store files as UTF-8 with byte order mark
+dotnet_diagnostic.SA1412.severity = warning
+
+# SA1600: Elements should be documented
+dotnet_diagnostic.SA1600.severity = none
+
+# SA1601: Partial elements should be documented
+dotnet_diagnostic.SA1601.severity = none
+
+# SA1633: File should have header
+dotnet_diagnostic.SA1633.severity = none
+
+# SA1636: The file header copyright text should match the copyright text from the settings
+dotnet_diagnostic.SA1636.severity = none
+
+# SX1101: Do not prefix local calls with 'this.'
+dotnet_diagnostic.SX1101.severity = warning
+
+# SX1309: Field names should begin with underscore
+dotnet_diagnostic.SX1309.severity = warning
+

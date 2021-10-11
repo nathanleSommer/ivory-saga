@@ -1,9 +1,9 @@
-﻿using IvorySaga.Data;
-using IvorySaga.Services;
-using MediatR;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using IvorySaga.Data;
+using IvorySaga.Services;
+using MediatR;
 
 namespace IvorySaga.Queries
 {

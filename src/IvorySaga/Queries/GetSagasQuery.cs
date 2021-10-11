@@ -1,10 +1,10 @@
-﻿using IvorySaga.Data;
-using IvorySaga.Services;
-using MediatR;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using IvorySaga.Data;
+using IvorySaga.Services;
+using MediatR;
 
 namespace IvorySaga.Queries
 {
@@ -21,7 +21,7 @@ namespace IvorySaga.Queries
 
             public async Task<IEnumerable<Saga>> Handle(GetSagasQuery request, CancellationToken cancellationToken = default)
             {
-                var sagas = await _sagaService.Get(cancellationToken);
+                var sagas = await _sagaService.GetAsync(cancellationToken);
                 return sagas?.AsReadOnly() ?? Enumerable.Empty<Saga>();
             }
         }
