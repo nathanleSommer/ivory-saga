@@ -1,9 +1,8 @@
-﻿using IvorySaga.Data;
-using IvorySaga.Services;
-using MediatR;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using IvorySaga.Services;
+using MediatR;
 
 namespace IvorySaga.Commands
 {
@@ -28,14 +27,13 @@ namespace IvorySaga.Commands
                 _sagaService = service;
             }
 
-            /// <inheritdoc />
             public async Task<Unit> Handle(UpdateSagaCommand request, CancellationToken cancellationToken = default)
             {
                 var timestamp = DateTimeOffset.UtcNow;
 
                 var saga = await _sagaService.GetAsync(request.Id, cancellationToken);
 
-                if (saga == null) 
+                if (saga == null)
                 {
                     throw new SagaNotFoundException(request.Id.ToString());
                 }

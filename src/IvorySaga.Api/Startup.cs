@@ -1,9 +1,8 @@
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 
 namespace IvorySaga.Api
 {
@@ -30,7 +29,7 @@ namespace IvorySaga.Api
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             ConfigureSwagger(app);
 
@@ -43,7 +42,7 @@ namespace IvorySaga.Api
             });
         }
 
-        private void ConfigureSwagger(IApplicationBuilder app)
+        private static void ConfigureSwagger(IApplicationBuilder app)
         {
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ivory Saga v1"));

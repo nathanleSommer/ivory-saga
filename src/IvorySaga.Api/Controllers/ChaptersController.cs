@@ -1,14 +1,13 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using IvorySaga.Api.DataTransferObjects;
 using IvorySaga.Api.Models;
 using IvorySaga.Commands;
 using IvorySaga.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace IvorySaga.Api.Controllers
 {
@@ -16,13 +15,11 @@ namespace IvorySaga.Api.Controllers
     [Route("v1/sagas/{SagaId}")]
     public class ChaptersController : ControllerBase
     {
-        private readonly ILogger<ChaptersController> _logger;
         private readonly IMapper _mapper;
         private readonly ISender _sender;
 
-        public ChaptersController(ILogger<ChaptersController> logger, IMapper mapper, ISender sender)
+        public ChaptersController(IMapper mapper, ISender sender)
         {
-            _logger = logger;
             _mapper = mapper;
             _sender = sender;
         }
@@ -34,7 +31,7 @@ namespace IvorySaga.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The chapters of the saga.</returns>
         [HttpGet("chapters")]
-        public async Task<ActionResult<IReadOnlyList<ChapterModel>>> GetChaptersAsync(
+        public async Task<ActionResult<IReadOnlyList<ChapterModel>>> GetChapters(
             [FromRoute] SagaReference reference,
             CancellationToken cancellationToken)
         {
@@ -50,7 +47,7 @@ namespace IvorySaga.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The chapter's information.</returns>
         [HttpGet("chapter/{ChapterId}")]
-        public async Task<ActionResult<ChapterModel>> GetChapterAsync(
+        public async Task<ActionResult<ChapterModel>> GetChapter(
             [FromRoute] ChapterReference reference,
             CancellationToken cancellationToken)
         {
@@ -67,7 +64,7 @@ namespace IvorySaga.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The newly created chapter.</returns>
         [HttpPost]
-        public async Task<ActionResult<SagaModel>> CreateChapterAsync(
+        public async Task<ActionResult<SagaModel>> CreateChapter(
             [FromRoute] SagaReference reference,
             [FromBody] CreateChapterRequest request,
             CancellationToken cancellationToken)

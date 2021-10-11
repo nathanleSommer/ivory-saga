@@ -1,14 +1,13 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using IvorySaga.Api.DataTransferObjects;
 using IvorySaga.Api.Models;
 using IvorySaga.Commands;
 using IvorySaga.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace IvorySaga.Api.Controllers
 {
@@ -16,13 +15,11 @@ namespace IvorySaga.Api.Controllers
     [Route("v1/sagas")]
     public class SagasController : ControllerBase
     {
-        private readonly ILogger<SagasController> _logger;
         private readonly IMapper _mapper;
         private readonly ISender _sender;
 
-        public SagasController(ILogger<SagasController> logger, IMapper mapper, ISender sender)
+        public SagasController(IMapper mapper, ISender sender)
         {
-            _logger = logger;
             _mapper = mapper;
             _sender = sender;
         }
@@ -60,7 +57,7 @@ namespace IvorySaga.Api.Controllers
         /// Creates a new saga.
         /// </summary>
         /// <param name="request">The saga's information.</param>
-        /// <param name="cancellationToken">The cancellationToken</param>
+        /// <param name="cancellationToken">The cancellationToken.</param>
         /// <returns>The newly created saga.</returns>
         [HttpPost]
         public async Task<ActionResult<SagaModel>> CreateSaga(
@@ -73,7 +70,7 @@ namespace IvorySaga.Api.Controllers
         }
 
         /// <summary>
-        /// Update an existing saga.
+        /// Updates an existing saga.
         /// </summary>
         /// <param name="reference">The saga identifier.</param>
         /// <param name="request">The saga's information to update.</param>

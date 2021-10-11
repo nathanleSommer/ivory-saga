@@ -1,10 +1,10 @@
-﻿using IvorySaga.Data;
-using IvorySaga.Services;
-using MediatR;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using IvorySaga.Data;
+using IvorySaga.Services;
+using MediatR;
 
 namespace IvorySaga.Queries
 {

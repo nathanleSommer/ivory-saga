@@ -5,10 +5,13 @@ VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{87C36286-D514-40E7-9A85-AAAA984E2AA9}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitignore = .gitignore
+		Directory.build.props = Directory.build.props
 		LICENSE = LICENSE
 		.github\workflows\main.yml = .github\workflows\main.yml
 		README.md = README.md
+		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F3078DF4-5A41-4A4E-8E35-59B67C56FD24}"

@@ -1,10 +1,10 @@
-﻿using IvorySaga.Data;
-using IvorySaga.Mongo;
-using MongoDB.Driver;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using IvorySaga.Data;
+using IvorySaga.Mongo;
+using MongoDB.Driver;
 
 namespace IvorySaga.Services
 {
@@ -39,7 +39,8 @@ namespace IvorySaga.Services
             try
             {
                 await _sagas.InsertOneAsync(saga, cancellationToken: cancellationToken);
-            } catch(MongoWriteException e)
+            }
+            catch (MongoWriteException e)
             {
                 throw new SagaNotCreatedException(saga.Id.ToString(), e);
             }
@@ -52,12 +53,13 @@ namespace IvorySaga.Services
             return _sagas.ReplaceOneAsync(saga => saga.Id == id, sagaIn, cancellationToken: cancellationToken);
         }
 
-        public Task RemoveAsync(Saga sagaIn, CancellationToken cancellationToken = default) {
+        public Task RemoveAsync(Saga sagaIn, CancellationToken cancellationToken = default)
+        {
             return _sagas.DeleteOneAsync(saga => saga.Id == sagaIn.Id, cancellationToken: cancellationToken);
         }
 
-
-        public Task RemoveAsync(Guid id, CancellationToken cancellationToken = default) {
+        public Task RemoveAsync(Guid id, CancellationToken cancellationToken = default)
+        {
             return _sagas.DeleteOneAsync(saga => saga.Id == id, cancellationToken: cancellationToken);
         }
     }
