@@ -21,6 +21,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D6788D12-DBBA-4162-A9D6-EF4B707939ED}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IvorySaga.Tests", "tests\IvorySaga.Tests\IvorySaga.Tests.csproj", "{5CF7422F-9071-4AF9-B83C-D1AAE6FCC2E4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E09A6FF8-884D-47AA-8C28-9AF6AC2E855F} = {E09A6FF8-884D-47AA-8C28-9AF6AC2E855F}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IvorySaga", "src\IvorySaga\IvorySaga.csproj", "{E09A6FF8-884D-47AA-8C28-9AF6AC2E855F}"
 EndProject
