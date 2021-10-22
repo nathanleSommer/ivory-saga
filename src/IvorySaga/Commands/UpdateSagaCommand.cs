@@ -20,18 +20,18 @@ namespace IvorySaga.Commands
 
         internal sealed class Handler : IRequestHandler<UpdateSagaCommand, Unit>
         {
-            private readonly SagaRepository _sagaService;
+            private readonly SagaRepository _repository;
 
-            public Handler(SagaRepository service)
+            public Handler(SagaRepository repository)
             {
-                _sagaService = service;
+                _repository = repository;
             }
 
             public async Task<Unit> Handle(UpdateSagaCommand request, CancellationToken cancellationToken = default)
             {
                 var timestamp = DateTimeOffset.UtcNow;
 
-                var saga = await _sagaService.GetAsync(request.Id, cancellationToken);
+                var saga = await _repository.GetAsync(request.Id, cancellationToken);
 
                 if (saga == null)
                 {
@@ -44,7 +44,7 @@ namespace IvorySaga.Commands
                     saga.UpdatedAt = timestamp;
                 }
 
-                await _sagaService.UpdateAsync(saga.Id, saga, cancellationToken);
+                await _repository.UpdateAsync(saga.Id, saga, cancellationToken);
 
                 return Unit.Value;
             }

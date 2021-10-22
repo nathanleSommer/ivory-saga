@@ -21,15 +21,24 @@ namespace IvorySaga.Commands
 
         internal sealed class Handler : IRequestHandler<CreateChapterCommand, Chapter>
         {
-            private readonly ChapterRepository _chapterService;
+            private readonly SagaRepository _sagaRepository;
+            private readonly ChapterRepository _chapterRepository;
 
-            public Handler(ChapterRepository chapterService)
+            public Handler(SagaRepository sagaRepository, ChapterRepository chapterRepository)
             {
-                _chapterService = chapterService;
+                _sagaRepository = sagaRepository;
+                _chapterRepository = chapterRepository;
             }
 
             public async Task<Chapter> Handle(CreateChapterCommand request, CancellationToken cancellationToken = default)
             {
+                var saga = await _sagaRepository.GetAsync(request.SagaId, cancellationToken);
+
+                if (saga is null)
+                {
+                    throw new SagaNotFoundException(request.SagaId.ToString());
+                }
+
                 var timestamp = DateTimeOffset.UtcNow;
 
                 var chapter = new Chapter
@@ -41,7 +50,7 @@ namespace IvorySaga.Commands
                     UpdatedAt = timestamp,
                 };
 
-                return await _chapterService.CreateAsync(chapter, cancellationToken);
+                return await _chapterRepository.CreateAsync(chapter, cancellationToken);
             }
         }
     }

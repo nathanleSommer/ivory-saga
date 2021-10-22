@@ -23,9 +23,9 @@ namespace IvorySaga.Commands
         {
             private readonly SagaRepository _sagaService;
 
-            public Handler(SagaRepository service)
+            public Handler(SagaRepository repository)
             {
-                _sagaService = service;
+                _sagaService = repository;
             }
 
             public async Task<Saga> Handle(CreateSagaCommand request, CancellationToken cancellationToken = default)

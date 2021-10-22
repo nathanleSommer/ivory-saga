@@ -45,9 +45,9 @@ namespace IvorySaga.Services
             return chapter;
         }
 
-        public Task UpdateAsync(string id, Chapter chapterIn, CancellationToken cancellationToken = default)
+        public Task UpdateAsync(Guid id, Chapter chapterIn, CancellationToken cancellationToken = default)
         {
-            return _chapters.ReplaceOneAsync(chapter => chapter.Id.ToString() == id, chapterIn, cancellationToken: cancellationToken);
+            return _chapters.ReplaceOneAsync(chapter => chapter.Id == id, chapterIn, cancellationToken: cancellationToken);
         }
 
         public Task RemoveAsync(Chapter chapterIn, CancellationToken cancellationToken = default)

@@ -32,7 +32,7 @@ namespace IvorySaga.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<SagaModel>>> GetSagas(CancellationToken cancellationToken)
         {
-            var query = new GetSagasQuery();
+            var query = new GetAllSagasQuery();
             var response = await _sender.Send(query, cancellationToken);
             return Ok(_mapper.Map<IReadOnlyList<SagaModel>>(response));
         }
@@ -49,8 +49,16 @@ namespace IvorySaga.Api.Controllers
             CancellationToken cancellationToken)
         {
             var query = new GetSagaQuery(reference.SagaId);
-            var response = await _sender.Send(query, cancellationToken);
-            return Ok(_mapper.Map<SagaModel>(response));
+
+            try
+            {
+                var response = await _sender.Send(query, cancellationToken);
+                return Ok(_mapper.Map<SagaModel>(response));
+            }
+            catch (SagaNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         /// <summary>
@@ -83,7 +91,40 @@ namespace IvorySaga.Api.Controllers
             CancellationToken cancellationToken)
         {
             var command = new UpdateSagaCommand(reference.SagaId, request.Title);
-            await _sender.Send(command, cancellationToken);
+
+            try
+            {
+                await _sender.Send(command, cancellationToken);
+            }
+            catch (SagaNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Deletes an existing saga.
+        /// </summary>
+        /// <param name="reference">The saga identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>No content.</returns>
+        [HttpDelete("{SagaId}")]
+        public async Task<ActionResult> DeleteSaga(
+            [FromRoute] SagaReference reference,
+            CancellationToken cancellationToken)
+        {
+            var command = new DeleteSagaCommand(reference.SagaId);
+
+            try
+            {
+                await _sender.Send(command, cancellationToken);
+            }
+            catch (SagaNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
 
             return NoContent();
         }
