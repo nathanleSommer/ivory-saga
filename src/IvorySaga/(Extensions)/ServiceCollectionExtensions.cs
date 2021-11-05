@@ -18,11 +18,12 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            services.Configure<IvorySagaDatabaseSettings>(
-                configuration.GetSection(nameof(IvorySagaDatabaseSettings)));
+            services
+                .Configure<MongoConnectionOptions>(configuration.GetSection(nameof(MongoConnectionOptions)))
+                .Configure<IvorySagaDatabaseSettings>(configuration.GetSection(nameof(IvorySagaDatabaseSettings)));
 
-            services.AddSingleton<IIvorySagaDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<IvorySagaDatabaseSettings>>().Value);
+            services.AddSingleton<IMongoConnectionOptions>(sp => sp.GetRequiredService<IOptions<MongoConnectionOptions>>().Value);
+            services.AddSingleton<IIvorySagaDatabaseSettings>(sp => sp.GetRequiredService<IOptions<IvorySagaDatabaseSettings>>().Value);
 
             services.AddSingleton<SagaRepository>();
             services.AddSingleton<ChapterRepository>();

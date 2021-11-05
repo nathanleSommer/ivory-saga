@@ -1,7 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ivorysaga
+  name: ivorysaga-deployment
+  labels:
+    app: ivorysaga
 spec:
   selector:
     matchLabels:

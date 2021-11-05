@@ -12,9 +12,9 @@ namespace IvorySaga.Services
     {
         private readonly IMongoCollection<Saga> _sagas;
 
-        public SagaRepository(IIvorySagaDatabaseSettings settings)
+        public SagaRepository(IMongoConnectionOptions options, IIvorySagaDatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
+            var client = new MongoClient(options.GetConnectionString());
             var database = client.GetDatabase(settings.DatabaseName);
 
             _sagas = database.GetCollection<Saga>(settings.SagasCollectionName);
