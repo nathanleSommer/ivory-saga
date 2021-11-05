@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ivorysaga-deployment
+  name: ivorysaga
   labels:
     app: ivorysaga
 spec:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: ivorysaga-api
-          image: nlesommer/ivorysaga
+          image: nlesommer/ivorysaga:main
           ports:
             - containerPort: 5000
               name: api

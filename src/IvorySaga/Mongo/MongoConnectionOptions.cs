@@ -6,6 +6,8 @@
 
         public int Port { get; set; } = default!;
 
-        public string RootPassword { get; set; } = null!;
+        public string Username { get; set; } = null!;
+
+        public string Password { get; set; } = null!;
     }
 }
