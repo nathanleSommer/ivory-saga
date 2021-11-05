@@ -13,9 +13,9 @@ namespace IvorySaga.Services
     {
         private readonly IMongoCollection<Chapter> _chapters;
 
-        public ChapterRepository(IIvorySagaDatabaseSettings settings)
+        public ChapterRepository(IMongoConnectionOptions options, IIvorySagaDatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
+            var client = new MongoClient(options.GetConnectionString());
             var database = client.GetDatabase(settings.DatabaseName);
 
             _chapters = database.GetCollection<Chapter>(settings.ChaptersCollectionName);
