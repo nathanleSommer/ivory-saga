@@ -9,8 +9,8 @@ namespace IvorySaga
         {
             mongoOptions = mongoOptions ?? throw new ArgumentNullException(nameof(mongoOptions));
 
-            var connectionString = !string.IsNullOrWhiteSpace(mongoOptions.RootPassword)
-                ? $"mongodb://root:{mongoOptions.RootPassword}@{mongoOptions.Host}:{mongoOptions.Port}"
+            var connectionString = !string.IsNullOrWhiteSpace(mongoOptions.Username)
+                ? $"mongodb://{mongoOptions.Username}:{mongoOptions.Password}@{mongoOptions.Host}:{mongoOptions.Port}"
                 : $"mongodb://{mongoOptions.Host}:{mongoOptions.Port}";
 
             return connectionString;
