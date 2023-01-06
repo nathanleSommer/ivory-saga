@@ -2,8 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using IvorySaga.Data;
-using IvorySaga.Services;
+using IvorySaga.Infrastructure.Data;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace IvorySaga.Commands
 {
@@ -21,18 +22,16 @@ namespace IvorySaga.Commands
 
         internal sealed class Handler : IRequestHandler<CreateChapterCommand, Chapter>
         {
-            private readonly SagaRepository _sagaRepository;
-            private readonly ChapterRepository _chapterRepository;
+            private readonly IvorySagaDataContext _repository;
 
-            public Handler(SagaRepository sagaRepository, ChapterRepository chapterRepository)
+            public Handler(IvorySagaDataContext repository)
             {
-                _sagaRepository = sagaRepository;
-                _chapterRepository = chapterRepository;
+                _repository = repository;
             }
 
             public async Task<Chapter> Handle(CreateChapterCommand request, CancellationToken cancellationToken = default)
             {
-                var saga = await _sagaRepository.GetAsync(request.SagaId, cancellationToken);
+                var saga = await _repository.Sagas.FindAsync(request.SagaId, cancellationToken);
 
                 if (saga is null)
                 {
@@ -50,7 +49,7 @@ namespace IvorySaga.Commands
                     UpdatedAt = timestamp,
                 };
 
-                return await _chapterRepository.CreateAsync(chapter, cancellationToken);
+                return await _repository.Chapter.AddAsync<Chapter>(chapter, cancellationToken);
             }
         }
     }

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using IvorySaga.Data;
-using IvorySaga.Services;
+using IvorySaga.Infrastructure.Data;
 using MediatR;
 
 namespace IvorySaga.Commands
@@ -21,11 +21,11 @@ namespace IvorySaga.Commands
 
         internal sealed class Handler : IRequestHandler<CreateSagaCommand, Saga>
         {
-            private readonly SagaRepository _sagaService;
+            private readonly IvorySagaDataContext _sagaRepository;
 
-            public Handler(SagaRepository repository)
+            public Handler(IvorySagaDataContext repository)
             {
-                _sagaService = repository;
+                _sagaRepository = repository;
             }
 
             public async Task<Saga> Handle(CreateSagaCommand request, CancellationToken cancellationToken = default)
@@ -41,7 +41,9 @@ namespace IvorySaga.Commands
                     UpdatedAt = timestamp,
                 };
 
-                var result = await _sagaService.CreateAsync(saga, cancellationToken);
+                var result = await _sagaRepository.AddAsync(saga, cancellationToken);
+
+                await _sagaRepository.SaveChangesAsync(cancellationToken);
 
                 return result;
             }

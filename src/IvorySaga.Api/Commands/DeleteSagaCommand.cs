@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using IvorySaga.Services;
+using IvorySaga.Infrastructure.Data;
+using IvorySaga.Infrastructure.Entities;
 using MediatR;
 
 namespace IvorySaga.Commands
@@ -20,10 +21,10 @@ namespace IvorySaga.Commands
 
         internal sealed class Handler : IRequestHandler<DeleteSagaCommand, Unit>
         {
-            private readonly SagaRepository _sagaRepository;
-            private readonly ChapterRepository _chapterRepository;
+            private readonly IvorySagaDataContext _sagaRepository;
+            private readonly ChapterDataContext _chapterRepository;
 
-            public Handler(SagaRepository sagaRepository, ChapterRepository chapterRepository)
+            public Handler(IvorySagaDataContext sagaRepository, ChapterDataContext chapterRepository)
             {
                 _sagaRepository = sagaRepository;
                 _chapterRepository = chapterRepository;
@@ -31,7 +32,7 @@ namespace IvorySaga.Commands
 
             public async Task<Unit> Handle(DeleteSagaCommand request, CancellationToken cancellationToken = default)
             {
-                var saga = await _sagaRepository.GetAsync(request.SagaId, cancellationToken);
+                var saga = await _sagaRepository.FindAsync(typeof(Saga), request.SagaId, cancellationToken);
 
                 if (saga == null)
                 {
@@ -39,16 +40,20 @@ namespace IvorySaga.Commands
                 }
 
                 // We cascade delete the chapters
-                var chapters = await _chapterRepository.GetAsync(request.SagaId, cancellationToken);
+                var chapters = await _chapterRepository.FindAsync(typeof(Chapter), request.SagaId, cancellationToken);
                 if (chapters != null)
                 {
                     foreach (var chapter in chapters)
                     {
-                        await _chapterRepository.RemoveAsync(chapter, cancellationToken);
+                        _chapterRepository.Remove(chapter, cancellationToken);
                     }
+
+                    await _chapterRepository.SaveChangesAsync(cancellationToken);
                 }
 
-                await _sagaRepository.RemoveAsync(saga, cancellationToken);
+                _sagaRepository.Remove(saga, cancellationToken);
+
+                await _sagaRepository.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;
             }

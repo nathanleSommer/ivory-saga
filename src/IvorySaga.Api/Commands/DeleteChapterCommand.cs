@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using IvorySaga.Infrastructure.Data;
 using IvorySaga.Services;
 using MediatR;
 
@@ -23,23 +24,25 @@ namespace IvorySaga.Commands
 
         internal sealed class Handler : IRequestHandler<DeleteChapterCommand, Unit>
         {
-            private readonly ChapterRepository _repository;
+            private readonly ChapterDataContext _repository;
 
-            public Handler(ChapterRepository repository)
+            public Handler(ChapterDataContext repository)
             {
                 _repository = repository;
             }
 
             public async Task<Unit> Handle(DeleteChapterCommand request, CancellationToken cancellationToken = default)
             {
-                var chapter = await _repository.GetAsync(request.SagaId, request.Id, cancellationToken);
+                var chapter = await _repository.FindAsync(request.SagaId, request.Id, cancellationToken);
 
                 if (chapter is null)
                 {
                     throw new ChapterNotFoundException(request.SagaId.ToString(), request.Id.ToString());
                 }
 
-                await _repository.RemoveAsync(chapter, cancellationToken);
+                _repository.Remove(chapter, cancellationToken);
+
+                _repository.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;
             }
