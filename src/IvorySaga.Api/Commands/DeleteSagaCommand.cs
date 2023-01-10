@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using IvorySaga.Infrastructure.Data;
+using IvorySaga.Infrastructure.DataContext;
 using IvorySaga.Infrastructure.Entities;
 using MediatR;
 

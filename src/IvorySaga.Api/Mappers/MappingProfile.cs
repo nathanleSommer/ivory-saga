@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using IvorySaga.Api.Models;
-using IvorySaga.Data;
+using IvorySaga.Domain.Data;
 
 namespace IvorySaga.Api.Mappers
 {
@@ -17,6 +17,8 @@ namespace IvorySaga.Api.Mappers
         {
             CreateMap<Saga, SagaModel>();
             CreateMap<Chapter, ChapterModel>();
+
+            CreateMap<Domain.Data.Saga, Infrastructure.Entities.Saga>();
         }
     }
 }

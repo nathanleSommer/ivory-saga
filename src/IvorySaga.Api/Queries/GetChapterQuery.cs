@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using IvorySaga.Data;
+using IvorySaga.Domain.Data;
 using MediatR;
 
 namespace IvorySaga.Queries

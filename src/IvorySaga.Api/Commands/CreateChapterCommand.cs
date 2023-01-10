@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using IvorySaga.Data;
-using IvorySaga.Infrastructure.Data;
+using IvorySaga.Domain.Data;
+using IvorySaga.Infrastructure.DataContext;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
