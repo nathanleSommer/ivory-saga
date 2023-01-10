@@ -1,6 +1,7 @@
-﻿namespace Microsoft.Extensions.DependencyInjection;
+﻿using IvorySaga.Infrastructure.DataContext;
 
-using IvorySaga.Infrastructure.Data;
+namespace Microsoft.Extensions.DependencyInjection;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 

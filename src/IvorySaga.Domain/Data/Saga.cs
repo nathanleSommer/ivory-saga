@@ -1,12 +1,13 @@
 ﻿using System;
+using IvorySaga.Domain.Common;
 
-namespace IvorySaga.Data
+namespace IvorySaga.Domain.Data
 {
     /// <summary>
     /// Represents a Saga.
     /// A saga contains chapters.
     /// </summary>
-    public sealed class Saga
+    public sealed class Saga : IAggregateRoot
     {
         public Guid Id { get; set; } = default!;
 

@@ -49,7 +49,7 @@ namespace IvorySaga.Commands
                     UpdatedAt = timestamp,
                 };
 
-                return await _repository.Chapter.AddAsync<Chapter>(chapter, cancellationToken);
+                return await _repository.Chapters.AddAsync<Chapter>(chapter, cancellationToken);
             }
         }
     }

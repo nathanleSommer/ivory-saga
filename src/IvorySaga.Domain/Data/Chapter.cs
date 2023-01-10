@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IvorySaga.Data
+namespace IvorySaga.Domain.Data
 {
     /// <summary>
     /// Represents a chapter inside a saga.

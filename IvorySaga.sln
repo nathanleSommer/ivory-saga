@@ -25,6 +25,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IvorySaga.Domain", "src\IvorySaga.Domain\IvorySaga.Domain.csproj", "{F7416A9F-00FF-4E10-91C1-D6122AF04933}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IvorySaga.Infrastructure", "src\IvorySaga.Infrastructure\IvorySaga.Infrastructure.csproj", "{CCDF65CC-21AB-44C7-8CB2-9CBDDA5432EB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F7416A9F-00FF-4E10-91C1-D6122AF04933} = {F7416A9F-00FF-4E10-91C1-D6122AF04933}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

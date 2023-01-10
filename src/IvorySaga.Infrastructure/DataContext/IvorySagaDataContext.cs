@@ -1,12 +1,12 @@
-﻿using IvorySaga.Infrastructure.Entities;
+﻿using IvorySaga.Domain.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace IvorySaga.Infrastructure.Data;
+namespace IvorySaga.Infrastructure.DataContext;
 
 public class IvorySagaDataContext : DbContext
 {
-    public DbSet<Saga> Sagas { get; set; }
-    public DbSet<Chapter> Chapter { get; set; }
+    public DbSet<Saga> Sagas { get; set; } = null!;
+    public DbSet<Chapter> Chapters { get; set; } = null!;
 
     public IvorySagaDataContext(DbContextOptions<IvorySagaDataContext> options)
         : base(options)
