@@ -18,7 +18,7 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddPgsql(Configuration);
+        services.AddPersistence(Configuration);
         services.AddIvorySaga(Configuration);
 
         services.AddRouting(options => options.LowercaseUrls = true);
