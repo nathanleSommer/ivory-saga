@@ -22,9 +22,9 @@ namespace IvorySaga.Domain.Saga
 
         public Author Author { get; private set; } = default!;
 
-        public DateTimeOffset CreatedAt { get; private set; } = default!;
+        public DateTime CreatedAt { get; private set; } = default!;
 
-        public DateTimeOffset UpdatedAt { get; private set; } = default!;
+        public DateTime UpdatedAt { get; private set; } = default!;
 
         private Saga()
         {
@@ -42,8 +42,8 @@ namespace IvorySaga.Domain.Saga
         {
             return new Saga(SagaId.CreateUnique(), title, author)
             {
-                CreatedAt = DateTimeOffset.Now,
-                UpdatedAt = DateTimeOffset.Now,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
             };
         }
     }

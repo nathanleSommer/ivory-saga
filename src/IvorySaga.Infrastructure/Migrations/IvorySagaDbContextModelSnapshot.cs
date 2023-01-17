@@ -29,14 +29,14 @@ namespace IvorySaga.Infrastructure.Migrations
                         .HasColumnName("SagaId");
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp");
 
                     b.HasKey("Id");
 
@@ -59,10 +59,10 @@ namespace IvorySaga.Infrastructure.Migrations
                                 .HasColumnType("text");
 
                             b1.Property<DateTimeOffset>("CreatedAt")
-                                .HasColumnType("timestamp with time zone");
+                                .HasColumnType("timestamp");
 
                             b1.Property<DateTimeOffset>("UpdatedAt")
-                                .HasColumnType("timestamp with time zone");
+                                .HasColumnType("timestamp");
 
                             b1.HasKey("Id", "SagaId");
 

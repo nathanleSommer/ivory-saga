@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IvorySaga.Application\IvorySaga.Application.csproj" />
     <ProjectReference Include="..\IvorySaga.Domain\IvorySaga.Domain.csproj" />
     <ProjectReference Include="..\IvorySaga.Infrastructure\IvorySaga.Infrastructure.csproj" />
   </ItemGroup>

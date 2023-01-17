@@ -1,8 +1,9 @@
 ﻿namespace Microsoft.Extensions.DependencyInjection;
 
-using IvorySaga.Application.Common.Persistence.Interfaces.Persistence;
+using IvorySaga.Application.Common.Persistence.Interfaces;
 using IvorySaga.Infrastructure.Persistence;
 using IvorySaga.Infrastructure.Persistence.Repositories;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 

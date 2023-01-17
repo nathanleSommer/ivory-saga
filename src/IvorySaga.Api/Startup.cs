@@ -1,5 +1,6 @@
 ﻿namespace IvorySaga.Api;
 
+using System;
 using System.Reflection;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -18,8 +19,9 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        //services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
+        services.AddApplication();
         services.AddPersistence(Configuration);
-        services.AddIvorySaga(Configuration);
 
         services.AddRouting(options => options.LowercaseUrls = true);
 

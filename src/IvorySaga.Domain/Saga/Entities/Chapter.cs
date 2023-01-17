@@ -11,9 +11,9 @@ namespace IvorySaga.Domain.Saga.Entities
     {
         public string Content { get; private set; } = default!;
 
-        public DateTimeOffset CreatedAt { get; private set; } = default!;
+        public DateTime CreatedAt { get; private set; } = default!;
 
-        public DateTimeOffset UpdatedAt { get; private set; } = default!;
+        public DateTime UpdatedAt { get; private set; } = default!;
 
         private Chapter()
         {
@@ -29,8 +29,8 @@ namespace IvorySaga.Domain.Saga.Entities
         {
             return new Chapter(ChapterId.CreateUnique(), content)
             {
-                CreatedAt = DateTimeOffset.Now,
-                UpdatedAt = DateTimeOffset.Now,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
             };
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace IvorySaga.Api.DataTransferObjects
+namespace IvorySaga.Api.DataTransferObjects.Saga
 {
     public sealed class SagaReference
     {
