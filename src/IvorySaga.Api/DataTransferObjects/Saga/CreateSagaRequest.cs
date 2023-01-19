@@ -1,5 +1,5 @@
-﻿namespace IvorySaga.Api.DataTransferObjects.Saga;
+﻿using IvorySaga.Api.DataTransferObjects.Saga.Author;
 
-public record CreateSagaRequest(string Title, AuthorRequest Author);
+namespace IvorySaga.Api.DataTransferObjects.Saga;
 
-public record AuthorRequest(string FirstName, string LastName);
+public sealed record CreateSagaRequest(string Title, AuthorModel Author);

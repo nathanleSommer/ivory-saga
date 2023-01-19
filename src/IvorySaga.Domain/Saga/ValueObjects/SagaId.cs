@@ -2,30 +2,29 @@
 using System.Collections.Generic;
 using IvorySaga.Domain.Common.Models;
 
-namespace IvorySaga.Domain.Saga.ValueObjects
+namespace IvorySaga.Domain.Saga.ValueObjects;
+
+public sealed class SagaId : ValueObject
 {
-    public sealed class SagaId : ValueObject
+    public Guid Value { get; private set; }
+
+    private SagaId(Guid value)
     {
-        public Guid Value { get; private set; }
+        Value = value;
+    }
 
-        private SagaId(Guid value)
-        {
-            Value = value;
-        }
+    public static SagaId CreateUnique()
+    {
+        return new SagaId(Guid.NewGuid());
+    }
 
-        public static SagaId CreateUnique()
-        {
-            return new SagaId(Guid.NewGuid());
-        }
+    public static SagaId Create(Guid value)
+    {
+        return new SagaId(value);
+    }
 
-        public static SagaId Create(Guid value)
-        {
-            return new SagaId(value);
-        }
-
-        public override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Value;
-        }
+    public override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
     }
 }

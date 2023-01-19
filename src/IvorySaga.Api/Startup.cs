@@ -1,12 +1,10 @@
-﻿namespace IvorySaga.Api;
-
-using System;
-using System.Reflection;
-using MediatR;
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+
+namespace IvorySaga.Api;
 
 public class Startup
 {

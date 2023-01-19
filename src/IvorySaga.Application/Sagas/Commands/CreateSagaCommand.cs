@@ -4,9 +4,18 @@ using IvorySaga.Domain.Saga;
 using IvorySaga.Domain.Saga.ValueObjects;
 using MediatR;
 
-namespace IvorySaga.Application.Sagas.Commands
-{
-    public record CreateSagaCommand(string Title, AuthorCommand Author) : IRequest<Saga>;
+namespace IvorySaga.Application.Sagas.Commands;
+
+public sealed class CreateSagaCommand : IRequest<Saga>{
+
+    public CreateSagaCommand(string title, AuthorCommand author)
+    {
+        _title = title;
+        _author = author;
+    }
+
+    private readonly string _title;
+    private readonly AuthorCommand _author;
 
     public record AuthorCommand(string FirstName, string LastName);
 
@@ -21,13 +30,12 @@ namespace IvorySaga.Application.Sagas.Commands
 
         public async Task<Saga> Handle(CreateSagaCommand request, CancellationToken cancellationToken = default)
         {
-            var timestamp = DateTime.UtcNow;
-
             var saga = Saga.Create(
-                request.Title,
-                Author.Create(request.Author.FirstName, request.Author.LastName));
+                request._title,
+                Author.Create(request._author.FirstName, request._author.LastName));
 
-            var result = await _repository.AddAsync(saga, cancellationToken);
+            var result = await _repository.CreateSagaAsync(saga, cancellationToken);
+
             return result;
         }
     }

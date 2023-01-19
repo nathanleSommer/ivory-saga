@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using IvorySaga.Api.DataTransferObjects.Saga.Author;
+using IvorySaga.Api.DataTransferObjects.Saga.Chapter;
 
 namespace IvorySaga.Api.DataTransferObjects.Saga;
 
-public record SagaResponse(
+public sealed record SagaResponse(
     Guid Id,
     string Title,
-    AuthorResponse Author,
+    AuthorModel Author,
+    List<ChapterResponse> Chapters,
     DateTime CreatedAt,
     DateTime UpdatedAt);
-
-public record AuthorResponse(string FirstName, string LastName);

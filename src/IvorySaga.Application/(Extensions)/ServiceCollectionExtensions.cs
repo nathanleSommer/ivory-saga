@@ -1,6 +1,6 @@
-﻿namespace Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
 
-using MediatR;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {

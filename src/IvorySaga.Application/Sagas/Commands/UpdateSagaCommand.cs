@@ -1,53 +1,43 @@
-﻿//using System;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using IvorySaga.Services;
-//using MediatR;
+﻿using IvorySaga.Application.Common.Persistence.Interfaces;
+using IvorySaga.Domain.Saga.ValueObjects;
+using MediatR;
 
-//namespace IvorySaga.Commands
-//{
-//    public sealed class UpdateSagaCommand : IRequest
-//    {
-//        public UpdateSagaCommand(Guid id, string? title)
-//        {
-//            Id = id;
-//            Title = title;
-//        }
+namespace IvorySaga.Application.Sagas.Commands;
 
-//        public Guid Id { get; set; } = default!;
+public sealed class UpdateSagaCommand : IRequest
+{
+    public UpdateSagaCommand(Guid sagaId, string newTitle)
+    {
+        _sagaId = sagaId;
+        _newTitle = newTitle;
+    }
 
-//        public string? Title { get; set; }
+    private readonly Guid _sagaId;
+    private readonly string _newTitle;
 
-//        internal sealed class Handler : IRequestHandler<UpdateSagaCommand, Unit>
-//        {
-//            private readonly SagaRepository _repository;
+    internal sealed class Handler : IRequestHandler<UpdateSagaCommand, Unit>
+    {
+        private readonly ISagaRepository _repository;
 
-//            public Handler(SagaRepository repository)
-//            {
-//                _repository = repository;
-//            }
+        public Handler(ISagaRepository repository)
+        {
+            _repository = repository;
+        }
 
-//            public async Task<Unit> Handle(UpdateSagaCommand request, CancellationToken cancellationToken = default)
-//            {
-//                var timestamp = DateTimeOffset.UtcNow;
+        public async Task<Unit> Handle(UpdateSagaCommand request, CancellationToken cancellationToken = default)
+        {
+            var saga = await _repository.FindSagaAsync(SagaId.Create(request._sagaId), cancellationToken);
 
-//                var saga = await _repository.GetAsync(request.Id, cancellationToken);
+            if (saga is null)
+            {
+                throw new SagaNotFoundException(request._sagaId.ToString());
+            }
 
-//                if (saga == null)
-//                {
-//                    throw new SagaNotFoundException(request.Id.ToString());
-//                }
+            saga.UpdateTitle(request._newTitle);
 
-//                if (request.Title != null)
-//                {
-//                    saga.Title = request.Title;
-//                    saga.UpdatedAt = timestamp;
-//                }
+            await _repository.UpdateSagaAsync(saga, cancellationToken);
 
-//                await _repository.UpdateAsync(saga.Id, saga, cancellationToken);
-
-//                return Unit.Value;
-//            }
-//        }
-//    }
-//}
+            return Unit.Value;
+        }
+    }
+}

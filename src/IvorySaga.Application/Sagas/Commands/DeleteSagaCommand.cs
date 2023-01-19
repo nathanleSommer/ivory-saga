@@ -1,62 +1,37 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using IvorySaga.Infrastructure.Entities;
-//using IvorySaga.Infrastructure.Persistence;
-//using MediatR;
+﻿using IvorySaga.Application.Common.Persistence.Interfaces;
+using MediatR;
+using IvorySaga.Domain.Saga.ValueObjects;
 
-//namespace IvorySaga.Commands
-//{
-//    public sealed class DeleteSagaCommand : IRequest
-//    {
-//        public DeleteSagaCommand(Guid sagaId)
-//        {
-//            SagaId = sagaId;
-//        }
+namespace IvorySaga.Application.Sagas.Commands;
 
-//        public Guid SagaId { get; }
+public sealed class DeleteSagaCommand : IRequest
+{
+    public DeleteSagaCommand(Guid id)
+    {
+        _sagaId = id;
+    }
 
-//        internal sealed class Handler : IRequestHandler<DeleteSagaCommand, Unit>
-//        {
-//            private readonly IvorySagaDbContext _sagaRepository;
-//            private readonly ChapterDataContext _chapterRepository;
+    private readonly Guid _sagaId;
 
-//            public Handler(IvorySagaDbContext sagaRepository, ChapterDataContext chapterRepository)
-//            {
-//                _sagaRepository = sagaRepository;
-//                _chapterRepository = chapterRepository;
-//            }
+    internal sealed class Handler : IRequestHandler<DeleteSagaCommand, Unit>
+    {
+        private readonly ISagaRepository _repository;
 
-//            public async Task<Unit> Handle(DeleteSagaCommand request, CancellationToken cancellationToken = default)
-//            {
-//                var saga = await _sagaRepository.FindAsync(typeof(Saga), request.SagaId, cancellationToken);
+        public Handler(ISagaRepository repository)
+        {
+            _repository = repository;
+        }
 
-//                if (saga == null)
-//                {
-//                    throw new SagaNotFoundException(request.SagaId.ToString());
-//                }
+        public async Task<Unit> Handle(DeleteSagaCommand request, CancellationToken cancellationToken = default)
+        {
+            var deleted = await _repository.DeleteSagaAsync(SagaId.Create(request._sagaId), cancellationToken);
 
-//                // We cascade delete the chapters
-//                var chapters = await _chapterRepository.FindAsync(typeof(Chapter), request.SagaId, cancellationToken);
-//                if (chapters != null)
-//                {
-//                    foreach (var chapter in chapters)
-//                    {
-//                        _chapterRepository.Remove(chapter, cancellationToken);
-//                    }
+            if (!deleted)
+            {
+                throw new SagaNotDeletedException(request._sagaId.ToString());
+            }
 
-//                    await _chapterRepository.SaveChangesAsync(cancellationToken);
-//                }
-
-//                _sagaRepository.Remove(saga, cancellationToken);
-
-//                await _sagaRepository.SaveChangesAsync(cancellationToken);
-
-//                return Unit.Value;
-//            }
-//        }
-//    }
-//}
+            return Unit.Value;
+        }
+    }
+}

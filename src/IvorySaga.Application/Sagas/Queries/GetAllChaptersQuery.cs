@@ -1,47 +1,38 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using IvorySaga.Domain.Saga.Entities;
-//using IvorySaga.Services;
-//using MediatR;
+﻿using IvorySaga.Application.Common.Persistence.Interfaces;
+using IvorySaga.Domain.Saga.Entities;
+using IvorySaga.Domain.Saga.ValueObjects;
+using MediatR;
 
-//namespace IvorySaga.Queries
-//{
-//    public sealed class GetAllChaptersQuery : IRequest<IEnumerable<Chapter>>
-//    {
-//        public GetAllChaptersQuery(Guid id)
-//        {
-//            SagaId = id;
-//        }
+namespace IvorySaga.Application.Sagas.Queries;
 
-//        public Guid SagaId { get; } = default!;
+public sealed class GetAllChaptersQuery : IRequest<IEnumerable<Chapter>>
+{
+    public GetAllChaptersQuery(Guid id)
+    {
+        Id = id;
+    }
 
-//        internal sealed class Handler : IRequestHandler<GetAllChaptersQuery, IEnumerable<Chapter>>
-//        {
-//            private readonly ChapterRepository _chapterRepository;
-//            private readonly SagaRepository _sagaRepository;
+    public Guid Id { get; } = default!;
 
-//            public Handler(SagaRepository sagaRepository, ChapterRepository chapterRepository)
-//            {
-//                _sagaRepository = sagaRepository;
-//                _chapterRepository = chapterRepository;
-//            }
+    internal sealed class Handler : IRequestHandler<GetAllChaptersQuery, IEnumerable<Chapter>>
+    {
+        private readonly ISagaRepository _repository;
 
-//            public async Task<IEnumerable<Chapter>> Handle(GetAllChaptersQuery request, CancellationToken cancellationToken = default)
-//            {
-//                var saga = await _sagaRepository.GetAsync(request.SagaId, cancellationToken);
+        public Handler(ISagaRepository sagaRepository)
+        {
+            _repository = sagaRepository;
+        }
 
-//                if (saga is null)
-//                {
-//                    throw new SagaNotFoundException(request.SagaId.ToString());
-//                }
+        public Task<IEnumerable<Chapter>> Handle(GetAllChaptersQuery request, CancellationToken cancellationToken = default)
+        {
+            var chapters = _repository.FindAllChapters(SagaId.Create(request.Id));
 
-//                var chapters = await _chapterRepository.GetAsync(request.SagaId, cancellationToken);
+            if (chapters.Any())
+            {
+                throw new SagaNotFoundException(request.Id.ToString());
+            }
 
-//                return chapters?.AsReadOnly() ?? Enumerable.Empty<Chapter>();
-//            }
-//        }
-//    }
-//}
+            return Task.FromResult(chapters);
+        }
+    }
+}

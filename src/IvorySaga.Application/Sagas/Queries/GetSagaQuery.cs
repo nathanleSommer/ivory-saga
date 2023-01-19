@@ -1,40 +1,38 @@
-﻿using System;
-using IvorySaga.Application.Common.Persistence.Interfaces;
+﻿using IvorySaga.Application.Common.Persistence.Interfaces;
 using IvorySaga.Domain.Saga;
 using IvorySaga.Domain.Saga.ValueObjects;
 using MediatR;
 
-namespace IvorySaga.Application.Sagas.Queries
+namespace IvorySaga.Application.Sagas.Queries;
+
+public sealed class GetSagaQuery : IRequest<Saga>
 {
-    public sealed class GetSagaQuery : IRequest<Saga>
+    public GetSagaQuery(Guid sagaId)
     {
-        public GetSagaQuery(Guid sagaId)
+        _sagaId = sagaId;
+    }
+
+    private readonly Guid _sagaId;
+
+    internal sealed class Handler : IRequestHandler<GetSagaQuery, Saga>
+    {
+        private readonly ISagaRepository _repository;
+
+        public Handler(ISagaRepository repository)
         {
-            Id = sagaId;
+            _repository = repository;
         }
 
-        public Guid Id { get; set; } = default!;
-
-        internal sealed class Handler : IRequestHandler<GetSagaQuery, Saga>
+        public async Task<Saga> Handle(GetSagaQuery request, CancellationToken cancellationToken = default)
         {
-            private readonly ISagaRepository _repository;
+            var saga = await _repository.FindSagaAsync(SagaId.Create(request._sagaId), cancellationToken);
 
-            public Handler(ISagaRepository repository)
+            if (saga is null)
             {
-                _repository = repository;
+                throw new SagaNotFoundException(request._sagaId.ToString());
             }
 
-            public async Task<Saga> Handle(GetSagaQuery request, CancellationToken cancellationToken = default)
-            {
-                var saga = await _repository.FindAsync(SagaId.Create(request.Id), cancellationToken);
-
-                if (saga is null)
-                {
-                    throw new SagaNotFoundException(request.Id.ToString());
-                }
-
-                return saga;
-            }
+            return saga;
         }
     }
 }

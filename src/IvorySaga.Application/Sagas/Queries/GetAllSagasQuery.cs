@@ -1,29 +1,24 @@
-﻿//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using IvorySaga.Domain.Data;
-//using IvorySaga.Services;
-//using MediatR;
+﻿using IvorySaga.Application.Common.Persistence.Interfaces;
+using IvorySaga.Domain.Saga;
+using MediatR;
 
-//namespace IvorySaga.Queries
-//{
-//    public sealed class GetAllSagasQuery : IRequest<IEnumerable<Saga>>
-//    {
-//        internal sealed class Handler : IRequestHandler<GetAllSagasQuery, IEnumerable<Saga>>
-//        {
-//            private readonly SagaRepository _repository;
+namespace IvorySaga.Application.Sagas.Queries;
 
-//            public Handler(SagaRepository repository)
-//            {
-//                _repository = repository;
-//            }
+public sealed class GetAllSagasQuery : IRequest<IEnumerable<Saga>>
+{
+    internal sealed class Handler : IRequestHandler<GetAllSagasQuery, IEnumerable<Saga>>
+    {
+        private readonly ISagaRepository _repository;
 
-//            public async Task<IEnumerable<Saga>> Handle(GetAllSagasQuery request, CancellationToken cancellationToken = default)
-//            {
-//                var sagas = await _repository.GetAsync(cancellationToken);
-//                return sagas?.AsReadOnly() ?? Enumerable.Empty<Saga>();
-//            }
-//        }
-//    }
-//}
+        public Handler(ISagaRepository repository)
+        {
+            _repository = repository;
+        }
+
+        public Task<IEnumerable<Saga>> Handle(GetAllSagasQuery request, CancellationToken cancellationToken = default)
+        {
+            var sagas = _repository.FindAllSagas();
+            return Task.FromResult(sagas);
+        }
+    }
+}
