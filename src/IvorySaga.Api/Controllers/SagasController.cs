@@ -1,132 +1,132 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using IvorySaga.Api.DataTransferObjects;
-using IvorySaga.Api.Models;
-using IvorySaga.Commands;
-using IvorySaga.Queries;
+using IvorySaga.Api.DataTransferObjects.Saga;
+using IvorySaga.Application.Sagas.Commands;
+using IvorySaga.Application.Sagas.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IvorySaga.Api.Controllers
+namespace IvorySaga.Api.Controllers;
+
+[ApiController]
+[Route("v1/sagas")]
+public class SagasController : ControllerBase
 {
-    [ApiController]
-    [Route("v1/sagas")]
-    public class SagasController : ControllerBase
+    private readonly IMapper _mapper;
+    private readonly ISender _sender;
+
+    public SagasController(IMapper mapper, ISender sender)
     {
-        private readonly IMapper _mapper;
-        private readonly ISender _sender;
+        _mapper = mapper;
+        _sender = sender;
+    }
 
-        public SagasController(IMapper mapper, ISender sender)
-        {
-            _mapper = mapper;
-            _sender = sender;
-        }
+    /// <summary>
+    /// Creates a new saga.
+    /// </summary>
+    /// <param name="request">The saga's information.</param>
+    /// <param name="cancellationToken">The cancellationToken.</param>
+    /// <returns>The newly created saga.</returns>
+    [HttpPost]
+    public async Task<ActionResult<SagaResponse>> CreateSaga(
+        [FromBody] CreateSagaRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = _mapper.Map<CreateSagaCommand>(request);
+        var response = await _sender.Send(command, cancellationToken);
 
-        /// <summary>
-        /// Gets the available sagas.
-        /// </summary>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The sagas' information.</returns>
-        [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<SagaModel>>> GetSagas(CancellationToken cancellationToken)
+        return Ok(_mapper.Map<SagaResponse>(response));
+    }
+
+    /// <summary>
+    /// Gets a saga.
+    /// </summary>
+    /// <param name="reference">The saga identifier.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The saga's information.</returns>
+    [HttpGet("{SagaId}")]
+    public async Task<ActionResult<IReadOnlyList<SagaResponse>>> GetSaga(
+        [FromRoute] SagaReference reference,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetSagaQuery(reference.SagaId);
+
+        try
         {
-            var query = new GetAllSagasQuery();
             var response = await _sender.Send(query, cancellationToken);
-            return Ok(_mapper.Map<IReadOnlyList<SagaModel>>(response));
+            return Ok(_mapper.Map<SagaResponse>(response));
         }
-
-        /// <summary>
-        /// Gets a saga.
-        /// </summary>
-        /// <param name="reference">The saga identifier.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The saga's information.</returns>
-        [HttpGet("{SagaId}")]
-        public async Task<ActionResult<IReadOnlyList<SagaModel>>> GetSaga(
-            [FromRoute] SagaReference reference,
-            CancellationToken cancellationToken)
+        catch (SagaNotFoundException e)
         {
-            var query = new GetSagaQuery(reference.SagaId);
-
-            try
-            {
-                var response = await _sender.Send(query, cancellationToken);
-                return Ok(_mapper.Map<SagaModel>(response));
-            }
-            catch (SagaNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            return NotFound(e.Message);
         }
+    }
 
-        /// <summary>
-        /// Creates a new saga.
-        /// </summary>
-        /// <param name="request">The saga's information.</param>
-        /// <param name="cancellationToken">The cancellationToken.</param>
-        /// <returns>The newly created saga.</returns>
-        [HttpPost]
-        public async Task<ActionResult<SagaModel>> CreateSaga(
-            [FromBody] CreateSagaRequest request,
-            CancellationToken cancellationToken)
+    /// <summary>
+    /// Gets the available sagas.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The sagas' information.</returns>
+    [HttpGet]
+    public async Task<ActionResult<IReadOnlyList<SagaResponse>>> GetSagas(CancellationToken cancellationToken)
+    {
+        var query = new GetAllSagasQuery();
+        var response = await _sender.Send(query, cancellationToken);
+        return Ok(_mapper.Map<IReadOnlyList<SagaResponse>>(response));
+    }
+
+    /// <summary>
+    /// Updates an existing saga.
+    /// </summary>
+    /// <param name="reference">The saga identifier.</param>
+    /// <param name="request">The saga's information to update.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>No content.</returns>
+    [HttpPatch("{SagaId}")]
+    public async Task<ActionResult> UpdateSaga(
+        [FromRoute] SagaReference reference,
+        [FromBody] UpdateSagaRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new UpdateSagaCommand(reference.SagaId, request.NewTitle);
+
+        try
         {
-            var command = new CreateSagaCommand(request.Title, request.Author);
-            var response = await _sender.Send(command, cancellationToken);
-            return Ok(_mapper.Map<SagaModel>(response));
+            await _sender.Send(command, cancellationToken);
         }
-
-        /// <summary>
-        /// Updates an existing saga.
-        /// </summary>
-        /// <param name="reference">The saga identifier.</param>
-        /// <param name="request">The saga's information to update.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>No content.</returns>
-        [HttpPatch("{SagaId}")]
-        public async Task<ActionResult> UpdateSaga(
-            [FromRoute] SagaReference reference,
-            [FromBody] UpdateSagaRequest request,
-            CancellationToken cancellationToken)
+        catch (SagaNotFoundException e)
         {
-            var command = new UpdateSagaCommand(reference.SagaId, request.Title);
-
-            try
-            {
-                await _sender.Send(command, cancellationToken);
-            }
-            catch (SagaNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
-
-            return NoContent();
+            return NotFound(e.Message);
         }
 
-        /// <summary>
-        /// Deletes an existing saga.
-        /// </summary>
-        /// <param name="reference">The saga identifier.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>No content.</returns>
-        [HttpDelete("{SagaId}")]
-        public async Task<ActionResult> DeleteSaga(
-            [FromRoute] SagaReference reference,
-            CancellationToken cancellationToken)
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Deletes an existing saga.
+    /// </summary>
+    /// <param name="reference">The saga identifier.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>No content.</returns>
+    [HttpDelete("{SagaId}")]
+    public async Task<ActionResult> DeleteSaga(
+        [FromRoute] SagaReference reference,
+        CancellationToken cancellationToken)
+    {
+        var command = new DeleteSagaCommand(reference.SagaId);
+
+        try
         {
-            var command = new DeleteSagaCommand(reference.SagaId);
-
-            try
-            {
-                await _sender.Send(command, cancellationToken);
-            }
-            catch (SagaNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
-
-            return NoContent();
+            await _sender.Send(command, cancellationToken);
         }
+        catch (SagaNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+
+        return NoContent();
     }
 }

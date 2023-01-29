@@ -260,3 +260,5 @@ ModelManifest.xml
 /newman
 
 coverage.json
+
+*.out
