@@ -23,16 +23,16 @@ public sealed class GetAllChaptersQuery : IRequest<IEnumerable<Chapter>>
             _repository = sagaRepository;
         }
 
-        public Task<IEnumerable<Chapter>> Handle(GetAllChaptersQuery request, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Chapter>> Handle(GetAllChaptersQuery request, CancellationToken cancellationToken = default)
         {
-            var chapters = _repository.FindAllChapters(SagaId.Create(request.Id));
+            var saga = await _repository.FindSagaAsync(SagaId.Create(request.Id), cancellationToken);
 
-            if (chapters.Any())
+            if (saga is null)
             {
                 throw new SagaNotFoundException(request.Id.ToString());
             }
 
-            return Task.FromResult(chapters);
+            return saga.Chapters;
         }
     }
 }

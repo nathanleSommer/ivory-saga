@@ -9,8 +9,6 @@ namespace IvorySaga.Domain.Saga.Entities;
 /// </summary>
 public sealed class Chapter : Entity<ChapterId>
 {
-    public SagaId SagaId { get; private set; } = default!;
-
     public string Content { get; private set; } = default!;
 
     public DateTime CreatedAt { get; private set; } = default!;
@@ -31,8 +29,8 @@ public sealed class Chapter : Entity<ChapterId>
     {
         return new Chapter(ChapterId.CreateUnique(), content)
         {
-            CreatedAt = DateTime.Now,
-            UpdatedAt = DateTime.Now,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
         };
     }
 

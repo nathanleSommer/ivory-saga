@@ -17,8 +17,8 @@ public sealed class GetAllSagasQuery : IRequest<IEnumerable<Saga>>
 
         public Task<IEnumerable<Saga>> Handle(GetAllSagasQuery request, CancellationToken cancellationToken = default)
         {
-            var sagas = _repository.FindAllSagas();
-            return Task.FromResult(sagas);
+            var sagas = _repository.FindAllSagasAsync(cancellationToken);
+            return sagas;
         }
     }
 }

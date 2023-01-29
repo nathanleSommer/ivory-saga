@@ -32,12 +32,25 @@ public sealed class DeleteChapterCommand : IRequest
 
         public async Task<Unit> Handle(DeleteChapterCommand request, CancellationToken cancellationToken = default)
         {
-            var deleted = await _repository.DeleteChapterAsync(SagaId.Create(request._sagaId), ChapterId.Create(request._chapterId), cancellationToken);
+            var sagaId = SagaId.Create(request._sagaId);
 
-            if (!deleted)
+            var saga = await _repository.FindSagaAsync(sagaId, cancellationToken);
+
+            if (saga is null)
             {
-                throw new ChapterNotDeletedException(request._sagaId.ToString(), request._chapterId.ToString());
+                throw new SagaNotFoundException(request._sagaId.ToString());
             }
+
+            var chapter = saga.Chapters.FirstOrDefault(x => x.Id == ChapterId.Create(request._chapterId));
+
+            if (chapter is null)
+            {
+                throw new ChapterNotFoundException(request._sagaId.ToString(), request._chapterId.ToString());
+            }
+
+            saga.DeleteChapter(chapter);
+
+            await _repository.UpdateSagaAsync(saga, cancellationToken);
 
             return Unit.Value;
         }

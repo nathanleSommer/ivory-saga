@@ -1,5 +1,4 @@
-﻿using System;
-using IvorySaga.Application.Common.Persistence.Interfaces;
+﻿using IvorySaga.Application.Common.Persistence.Interfaces;
 using IvorySaga.Domain.Saga;
 using IvorySaga.Domain.Saga.ValueObjects;
 using MediatR;
@@ -17,7 +16,7 @@ public sealed class CreateSagaCommand : IRequest<Saga>{
     private readonly string _title;
     private readonly AuthorCommand _author;
 
-    public record AuthorCommand(string FirstName, string LastName);
+    public record AuthorCommand(string Name);
 
     internal sealed class Handler : IRequestHandler<CreateSagaCommand, Saga>
     {
@@ -32,7 +31,7 @@ public sealed class CreateSagaCommand : IRequest<Saga>{
         {
             var saga = Saga.Create(
                 request._title,
-                Author.Create(request._author.FirstName, request._author.LastName));
+                Author.Create(request._author.Name));
 
             var result = await _repository.CreateSagaAsync(saga, cancellationToken);
 

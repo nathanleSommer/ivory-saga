@@ -27,7 +27,20 @@ public sealed class CreateChapterCommand : IRequest<Chapter>
 
         public async Task<Chapter> Handle(CreateChapterCommand request, CancellationToken cancellationToken = default)
         {
-            return await _repository.CreateChapterAsync(SagaId.Create(request._sagaId), Chapter.Create(request._content), cancellationToken);
+            var sagaId = SagaId.Create(request._sagaId);
+            var saga = await _repository.FindSagaAsync(sagaId, cancellationToken);
+
+            if (saga is null)
+            {
+                throw new SagaNotFoundException(request._sagaId.ToString());
+            }
+
+            var chapter = Chapter.Create(request._content);
+            saga.AddChapter(chapter);
+
+            await _repository.UpdateSagaAsync(saga, cancellationToken);
+
+            return chapter;
         }
     }
 }

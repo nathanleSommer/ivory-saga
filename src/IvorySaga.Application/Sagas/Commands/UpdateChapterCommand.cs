@@ -6,9 +6,9 @@ namespace IvorySaga.Application.Sagas.Commands;
 
 public sealed class UpdateChapterCommand : IRequest
 {
-    public UpdateChapterCommand(Guid id, Guid sagaId, string newContent)
+    public UpdateChapterCommand(Guid chapterId, Guid sagaId, string newContent)
     {
-        _chapterId = id;
+        _chapterId = chapterId;
         _sagaId = sagaId;
         _newContent = newContent;
     }
@@ -28,16 +28,25 @@ public sealed class UpdateChapterCommand : IRequest
 
         public async Task<Unit> Handle(UpdateChapterCommand request, CancellationToken cancellationToken = default)
         {
-            var chapter = await _repository.FindChapterAsync(SagaId.Create(request._sagaId), ChapterId.Create(request._chapterId), cancellationToken);
+            var sagaId = SagaId.Create(request._sagaId);
+
+            var saga = await _repository.FindSagaAsync(sagaId, cancellationToken);
+
+            if (saga is null)
+            {
+                throw new SagaNotFoundException(request._sagaId.ToString());
+            }
+
+            var chapter = saga.Chapters.FirstOrDefault(x => x.Id == ChapterId.Create(request._chapterId));
 
             if (chapter is null)
             {
                 throw new ChapterNotFoundException(request._sagaId.ToString(), request._chapterId.ToString());
             }
 
-            chapter.UpdateContent(request._newContent);
+            saga.UpdateChapter(chapter);
 
-            await _repository.UpdateChapterAsync(chapter, cancellationToken);
+            await _repository.UpdateSagaAsync(saga, cancellationToken);
 
             return Unit.Value;
         }

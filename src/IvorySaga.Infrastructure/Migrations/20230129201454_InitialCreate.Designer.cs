@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IvorySaga.Infrastructure.Migrations
 {
     [DbContext(typeof(IvorySagaDbContext))]
-    [Migration("20230115215727_InitialCreate")]
+    [Migration("20230129201454_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace IvorySaga.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.1")
+                .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -31,14 +31,14 @@ namespace IvorySaga.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("SagaId");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -61,10 +61,10 @@ namespace IvorySaga.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasColumnType("text");
 
-                            b1.Property<DateTimeOffset>("CreatedAt")
+                            b1.Property<DateTime>("CreatedAt")
                                 .HasColumnType("timestamp with time zone");
 
-                            b1.Property<DateTimeOffset>("UpdatedAt")
+                            b1.Property<DateTime>("UpdatedAt")
                                 .HasColumnType("timestamp with time zone");
 
                             b1.HasKey("Id", "SagaId");
@@ -82,11 +82,7 @@ namespace IvorySaga.Infrastructure.Migrations
                             b1.Property<Guid>("SagaId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<string>("FirstName")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<string>("LastName")
+                            b1.Property<string>("Name")
                                 .IsRequired()
                                 .HasColumnType("text");
 

@@ -66,6 +66,10 @@ public class ChaptersController : ControllerBase
             var response = await _sender.Send(query, cancellationToken);
             return Ok(_mapper.Map<ChapterResponse>(response));
         }
+        catch (SagaNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
         catch (ChapterNotFoundException e)
         {
             return NotFound(e.Message);
@@ -117,6 +121,10 @@ public class ChaptersController : ControllerBase
         {
             await _sender.Send(command, cancellationToken);
         }
+        catch (SagaNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
         catch (ChapterNotFoundException e)
         {
             return NotFound(e.Message);
@@ -143,6 +151,10 @@ public class ChaptersController : ControllerBase
             await _sender.Send(command, cancellationToken);
         }
         catch (ChapterNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (SagaNotFoundException e)
         {
             return NotFound(e.Message);
         }

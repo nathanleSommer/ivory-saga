@@ -1,11 +1,11 @@
-﻿namespace Microsoft.Extensions.DependencyInjection;
-
-using IvorySaga.Application.Common.Persistence.Interfaces;
+﻿using IvorySaga.Application.Common.Persistence.Interfaces;
 using IvorySaga.Infrastructure.Persistence;
 using IvorySaga.Infrastructure.Persistence.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {

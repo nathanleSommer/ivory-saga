@@ -5,24 +5,20 @@ namespace IvorySaga.Domain.Saga.ValueObjects;
 
 public class Author : ValueObject
 {
-    public string FirstName { get; private set; }
+    public string Name { get; private set; }
 
-    public string LastName { get; private set; }
-
-    private Author(string firstName, string lastName)
+    private Author(string name)
     {
-        FirstName = firstName;
-        LastName = lastName;
+        Name = name;
     }
 
-    public static Author Create(string firstName, string lastName)
+    public static Author Create(string name)
     {
-        return new Author(firstName, lastName);
+        return new Author(name);
     }
 
     public override IEnumerable<object> GetEqualityComponents()
     {
-        yield return FirstName;
-        yield return LastName;
+        yield return Name;
     }
 }

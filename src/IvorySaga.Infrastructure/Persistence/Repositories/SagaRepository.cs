@@ -1,6 +1,5 @@
 ﻿using IvorySaga.Application.Common.Persistence.Interfaces;
 using IvorySaga.Domain.Saga;
-using IvorySaga.Domain.Saga.Entities;
 using IvorySaga.Domain.Saga.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,12 +16,12 @@ public class SagaRepository : ISagaRepository
 
     public async Task<Saga?> FindSagaAsync(SagaId id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Sagas.FindAsync(keyValues: new object[] { id }, cancellationToken: cancellationToken);
+        return await _dbContext.Sagas.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
-    public IEnumerable<Saga> FindAllSagas()
+    public async Task<IEnumerable<Saga>> FindAllSagasAsync(CancellationToken cancellationToken = default)
     {
-        return _dbContext.Sagas.ToList();
+        return await _dbContext.Sagas.ToListAsync(cancellationToken);
     }
 
     public async Task<Saga> CreateSagaAsync(Saga saga, CancellationToken cancellationToken = default)
@@ -45,7 +44,7 @@ public class SagaRepository : ISagaRepository
 
     public async Task<bool> DeleteSagaAsync(SagaId id, CancellationToken cancellationToken = default)
     {
-        var saga = await _dbContext.Sagas.FindAsync(keyValues: new object[] { id }, cancellationToken: cancellationToken);
+        var saga = await _dbContext.Sagas.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken);
 
         if(saga is null)
         {
@@ -53,53 +52,10 @@ public class SagaRepository : ISagaRepository
         }
 
         var entity = _dbContext.Sagas.Remove(saga);
+        var deleted = entity.State == EntityState.Deleted;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return entity.State == EntityState.Deleted;
-    }
-
-    public async Task<Chapter?> FindChapterAsync(SagaId sagaId, ChapterId chapterId, CancellationToken cancellationToken = default)
-    {
-        return await _dbContext.Chapters.FindAsync(keyValues: new object[] { sagaId, chapterId }, cancellationToken: cancellationToken);
-    }
-
-    public async Task<Chapter> CreateChapterAsync(SagaId sagaId, Chapter chapter, CancellationToken cancellationToken = default)
-    {
-        var entity = await _dbContext.Chapters.AddAsync(chapter, cancellationToken);
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return entity.Entity;
-    }
-
-    public async Task<Chapter> UpdateChapterAsync(Chapter chapter, CancellationToken cancellationToken = default)
-    {
-        var entity = _dbContext.Chapters.Update(chapter);
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return entity.Entity;
-    }
-
-    public async Task<bool> DeleteChapterAsync(SagaId sagaId, ChapterId chapterId, CancellationToken cancellationToken = default)
-    {
-        var chapter = await _dbContext.Chapters.FindAsync(keyValues: new object[] { sagaId, chapterId }, cancellationToken: cancellationToken);
-
-        if (chapter is null)
-        {
-            return false;
-        }
-
-        var entity = _dbContext.Chapters.Remove(chapter);
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return entity.State == EntityState.Deleted;
-    }
-
-    public IEnumerable<Chapter> FindAllChapters(SagaId sagaId)
-    {
-        return _dbContext.Chapters.Where(c => c.SagaId == sagaId);
+        return deleted;
     }
 }

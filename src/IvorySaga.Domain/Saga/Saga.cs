@@ -54,4 +54,26 @@ public sealed class Saga : AggregateRoot<SagaId>
             Title = newTitle;
         }
     }
+
+    public void AddChapter(Chapter newChapter)
+    {
+        _chapters.Add(newChapter);
+    }
+
+    public void UpdateChapter(Chapter chapter)
+    {
+        var chapterToUpdate = _chapters.FirstOrDefault(x => x.Id == chapter.Id);
+
+        chapterToUpdate?.UpdateContent(chapter.Content);
+    }
+
+    public void DeleteChapter(Chapter chapter)
+    {
+        var chapterToDelete = _chapters.FirstOrDefault(x => x.Id == chapter.Id);
+
+        if(chapterToDelete is not null)
+        {
+            _chapters.Remove(chapterToDelete);
+        }
+    }
 }

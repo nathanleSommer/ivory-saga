@@ -17,8 +17,7 @@ namespace IvorySaga.Infrastructure.Migrations
                 {
                     SagaId = table.Column<Guid>(type: "uuid", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
-                    AuthorFirstName = table.Column<string>(name: "Author_FirstName", type: "text", nullable: false),
-                    AuthorLastName = table.Column<string>(name: "Author_LastName", type: "text", nullable: false),
+                    AuthorName = table.Column<string>(name: "Author_Name", type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },

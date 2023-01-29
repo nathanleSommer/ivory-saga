@@ -17,7 +17,6 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        //services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
         services.AddApplication();
         services.AddPersistence(Configuration);
 
